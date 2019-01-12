@@ -1,9 +1,12 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Inhabitants Information
-    </ion-title>
-  </ion-toolbar>
+  <ion-toolbar> <ion-title> Inhabitants Information </ion-title> </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <ion-virtual-scroll [items]="gnomeInformation$ | async">
+    <ion-item *virtualItem="let gnome">
+      {{ gnome.name }}
+      <div class="item-note" slot="end">{{ gnome.age }}</div>
+    </ion-item>
+  </ion-virtual-scroll>
+</ion-content>
