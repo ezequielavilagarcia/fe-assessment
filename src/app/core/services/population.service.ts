@@ -12,33 +12,29 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 export class PopulationService {
   private populationDetail: Gnome[];
   private apiEndpoint: string;
-  private subject = new BehaviorSubject([]);
-  public gnomesInformation$: Observable<Gnome[]> = this.subject.asObservable();
+
+  private gnomesInformationSubject = new BehaviorSubject([]);
+  private gnomeSelectedSubject = new BehaviorSubject(null);
+
+  public gnomesInformation$: Observable<Gnome[]> = this.gnomesInformationSubject.asObservable();
+  public gnomeSelected$: Observable<Gnome> = this.gnomeSelectedSubject.asObservable();
 
   constructor(@Inject(APP_CONFIG) constants: AppConfig, private http: HttpClient) {
     this.apiEndpoint = constants.apiEndpoint;
   }
 
-  /*   loadData(): Observable<Gnome[]> {
-    if (this.populationDetail == null) {
-      return this.http.get(this.apiEndpoint).pipe(
-        map((response: { Brastlewark: Gnome[] }) => {
-          this.populationDetail = response.Brastlewark;
-          return this.populationDetail;
-        })
-      );
-    } else {
-      return of(this.populationDetail);
-    }
-  } */
   loadData() {
     if (this.populationDetail == null) {
       return this.http.get(this.apiEndpoint).pipe(
         tap((response: { Brastlewark: Gnome[] }) => {
           this.populationDetail = response.Brastlewark;
-          this.subject.next(this.populationDetail);
+          this.gnomesInformationSubject.next(this.populationDetail);
         })
       );
     }
+  }
+
+  setGnomeSelected(gnome: Gnome) {
+    this.gnomeSelectedSubject.next(gnome);
   }
 }

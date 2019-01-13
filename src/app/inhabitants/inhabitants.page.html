@@ -4,9 +4,12 @@
 
 <ion-content>
   <ion-virtual-scroll [items]="gnomeInformation$ | async">
-    <ion-item *virtualItem="let gnome">
-      {{ gnome.name }}
-      <div class="item-note" slot="end">{{ gnome.age }}</div>
+    <ion-item *virtualItem="let gnome" (click)="goToGnomeDetail(gnome)">
+      <ion-avatar slot="start"> <img [src]="gnome.thumbnail" /> </ion-avatar>
+      <ion-label>
+        <h2>{{ gnome.name }}</h2>
+        <p>{{ gnome.professions.toString() }}</p>
+      </ion-label>
     </ion-item>
   </ion-virtual-scroll>
 </ion-content>

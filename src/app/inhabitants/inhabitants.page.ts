@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Observable, noop } from 'rxjs';
 
@@ -12,11 +13,16 @@ import { PopulationService } from '../core/services/population.service';
 })
 export class InhabitantsPage implements OnInit {
   gnomeInformation$: Observable<Gnome[]>;
-  constructor(private populationService: PopulationService) {
+  constructor(private populationService: PopulationService, private router: Router) {
     this.gnomeInformation$ = this.populationService.gnomesInformation$;
   }
 
   ngOnInit() {
     this.populationService.loadData().subscribe(noop);
+  }
+  goToGnomeDetail(gnome: Gnome) {
+    this.populationService.setGnomeSelected(gnome);
+
+    this.router.navigate(['/inhabitant-detail', gnome.id]);
   }
 }
