@@ -12,9 +12,9 @@ import { PopulationService } from '../core/services/population.service';
   styleUrls: ['inhabitants.page.scss']
 })
 export class InhabitantsPage implements OnInit {
-  gnomeInformation$: Observable<Gnome[]>;
+  gnomesInformation$: Observable<Gnome[]>;
   constructor(private populationService: PopulationService, private router: Router) {
-    this.gnomeInformation$ = this.populationService.gnomesInformation$;
+    this.gnomesInformation$ = this.populationService.gnomesInformation$;
   }
 
   ngOnInit() {
