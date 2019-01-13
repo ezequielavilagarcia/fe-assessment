@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-virtual-scroll [items]="gnomeInformation$ | async">
+  <ion-virtual-scroll [items]="gnomesInformation$ | async" class="inhabitants-list">
     <ion-item *virtualItem="let gnome" (click)="goToGnomeDetail(gnome)">
       <ion-avatar slot="start"> <img [src]="gnome.thumbnail" /> </ion-avatar>
       <ion-label>
