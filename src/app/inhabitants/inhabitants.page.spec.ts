@@ -1,7 +1,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {  ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
+
+import { ModalController } from '@ionic/angular';
 
 import { of, BehaviorSubject } from 'rxjs';
 
@@ -62,12 +64,20 @@ describe('InhabitantsPage', () => {
     class RouterStub {
       navigate(valueToNavigate: []) {}
     }
+
+    class ModalControllerStub {
+      create(object) {
+        return of({ present: () => of(null) });
+      }
+    }
+
     TestBed.configureTestingModule({
       declarations: [InhabitantsPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: PopulationService, useClass: PopulationServiceStub },
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
+        { provide: ModalController, useClass: ModalControllerStub }
       ]
     }).compileComponents();
 

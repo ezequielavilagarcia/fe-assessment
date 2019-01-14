@@ -30,7 +30,7 @@ export class PopulationService {
   loadData() {
     if (this.populationDetail == null) {
       return this.http.get(this.apiEndpoint).pipe(
-        tap((response: { Brastlewark: Gnome[] }) => {
+        map((response: { Brastlewark: Gnome[] }) => {
           this.populationDetail = response.Brastlewark;
           const professions = new Set();
           const hairColors = new Set();
@@ -43,8 +43,12 @@ export class PopulationService {
           this.gnomesInformationSubject.next(this.populationDetail);
           this.professionsSubject.next(Array.from(professions));
           this.hairColorsSubject.next(Array.from(hairColors));
+
+          return null;
         })
       );
+    } else {
+      return of(null);
     }
   }
 

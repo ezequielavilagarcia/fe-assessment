@@ -17,7 +17,7 @@ describe('PopulationService', () => {
       age: 30,
       height: 12,
       weight: 12,
-      friends: [],
+      friends: ['friend'],
       hair_color: 'blue'
     },
     {
@@ -28,7 +28,7 @@ describe('PopulationService', () => {
       age: 20,
       height: 11,
       weight: 11,
-      friends: [],
+      friends: ['friend'],
       hair_color: 'pink'
     },
     {
@@ -39,7 +39,7 @@ describe('PopulationService', () => {
       age: 10,
       height: 10,
       weight: 10,
-      friends: [],
+      friends: ['friend'],
       hair_color: 'red'
     }
   ];
@@ -50,7 +50,7 @@ describe('PopulationService', () => {
 
     class HttpClientStub {
       get() {
-        return of(inhabitantsList);
+        return of({ Brastlewark: inhabitantsList });
       }
     }
 
@@ -68,7 +68,6 @@ describe('PopulationService', () => {
   });
 
   describe('#loadData', () => {
-
     it('should call http client get with correct url', () => {
       const service: PopulationService = TestBed.get(PopulationService);
       const appConfig: AppConfig = TestBed.get(APP_CONFIG);
@@ -90,7 +89,7 @@ describe('PopulationService', () => {
       // It doesn't have to call http method here
       service.loadData().subscribe(noop);
 
-      expect(httpSpy).not.toHaveBeenCalledTimes(1);
+      expect(httpSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should send the inhabitants list to gnomesInformation$ observable', () => {
