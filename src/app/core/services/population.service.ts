@@ -34,6 +34,13 @@ export class PopulationService {
     }
   }
 
+  /**
+   * This is used to not search in all the data which gnome was selected, it is managed with rxjs
+   * When a gnome from inhabitants list is selected, a new value is emitted, and it is reached in any place where is need it.
+   *
+   * @param {Gnome} gnome
+   * @memberof PopulationService
+   */
   setGnomeSelected(gnome: Gnome) {
     this.gnomeSelectedSubject.next(gnome);
   }

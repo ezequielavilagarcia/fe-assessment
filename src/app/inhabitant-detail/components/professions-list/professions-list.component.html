@@ -1,0 +1,15 @@
+<ion-card>
+  <ion-card-header color="light" class="card-header">
+    <ion-card-title class="header">Professions</ion-card-title>
+  </ion-card-header>
+  <div *ngIf="gnome.professions.length; else noProfessions" id="professions-list">
+    <ion-item *ngFor="let profession of gnome.professions">
+      <ion-label class="value-alone" id="profession-value">{{ profession }}</ion-label>
+    </ion-item>
+  </div>
+  <ng-template #noProfessions>
+    <ion-item>
+      <ion-label class="value-alone" id="no-professions-message">{{ gnome.name }} does not have any profession</ion-label>
+    </ion-item>
+  </ng-template>
+</ion-card>

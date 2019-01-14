@@ -1,10 +1,55 @@
 <ion-header>
-  <ion-toolbar>
-      <ion-icon name="arrow-round-back" slot="start" [routerLink]="['/tabs/inhabitants-list']" class="back-arrow"></ion-icon>
+  <ion-toolbar color="primary">
+    <ion-icon
+      name="arrow-round-back"
+      slot="start"
+      [routerLink]="['/tabs/inhabitants-list']"
+      class="back-arrow"
+    ></ion-icon>
     <ion-title>inhabitant-detail</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content padding *ngIf="(gnomeSelected$ | async) as gnome; else noGnome" id="show-gnome">
+  <ion-card>
+    <ion-img [src]="gnome.thumbnail" class="img" id="gnome-thumbnail"></ion-img>
+    <ion-card-header color="light" class="card-header">
+      <ion-card-title id="gnome-name">{{ gnome.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-item>
+      <ion-label class="label" slot="start"> Age </ion-label>
+      <ion-note class="value" slot="end" id="gnome-age">{{ gnome.age }}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="label" slot="start"> Weight </ion-label>
+      <ion-note class="value" slot="end" id="gnome-weight">{{ gnome.weight }}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="label" slot="start"> Height </ion-label>
+      <ion-note class="value" slot="end" id="gnome-height">{{ gnome.height }}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="label" slot="start">Hair color</ion-label>
+      <div
+        id="gnome-hair-color"
+        slot="end"
+        [ngStyle]="{ 'background-color': gnome.hair_color }"
+        class="hair-color-circle"
+      ></div>
+    </ion-item>
+  </ion-card>
+  <app-professions-list [gnome]="gnome" class="margin-top"> </app-professions-list>
+  <app-friends-list [gnome]="gnome" class="margin-top"> </app-friends-list>
 </ion-content>
+<ng-template #noGnome>
+  <ion-content center id="no-gnome-message">
+    <ion-card>
+      <ion-card-header class="card-header card-margin-top">
+        <ion-card-title>Please friend, select a gnome first..</ion-card-title>
+      </ion-card-header>
+      <ion-button expand="block" color="secondary" [routerLink]="['/tabs/inhabitants-list']"
+        >Go back to the list</ion-button
+      >
+    </ion-card>
+  </ion-content>
+</ng-template>
