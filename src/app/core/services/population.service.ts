@@ -15,9 +15,13 @@ export class PopulationService {
 
   private gnomesInformationSubject = new BehaviorSubject([]);
   private gnomeSelectedSubject = new BehaviorSubject(null);
+  private professionsSubject = new BehaviorSubject([]);
+  private hairColorsSubject = new BehaviorSubject([]);
 
   public gnomesInformation$: Observable<Gnome[]> = this.gnomesInformationSubject.asObservable();
   public gnomeSelected$: Observable<Gnome> = this.gnomeSelectedSubject.asObservable();
+  public professions$: Observable<string[]> = this.professionsSubject.asObservable();
+  public hairColors$: Observable<string[]> = this.hairColorsSubject.asObservable();
 
   constructor(@Inject(APP_CONFIG) constants: AppConfig, private http: HttpClient) {
     this.apiEndpoint = constants.apiEndpoint;
@@ -28,7 +32,17 @@ export class PopulationService {
       return this.http.get(this.apiEndpoint).pipe(
         tap((response: { Brastlewark: Gnome[] }) => {
           this.populationDetail = response.Brastlewark;
+          const professions = new Set();
+          const hairColors = new Set();
+
+          for (const gnome of this.populationDetail) {
+            professions.add(gnome.professions);
+            hairColors.add(gnome.hair_color);
+          }
+
           this.gnomesInformationSubject.next(this.populationDetail);
+          this.professionsSubject.next(Array.from(professions));
+          this.hairColorsSubject.next(Array.from(hairColors));
         })
       );
     }

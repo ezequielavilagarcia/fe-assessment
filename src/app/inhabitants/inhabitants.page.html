@@ -1,11 +1,14 @@
 <ion-header>
-  <ion-toolbar> <ion-title> Inhabitants List </ion-title> </ion-toolbar>
+  <ion-toolbar color="dark"> <ion-title> Inhabitants List </ion-title> </ion-toolbar>
+  <ion-toolbar class="filter-item">
+    <ion-item lines="none"> <ion-icon name="options" slot="end"></ion-icon> </ion-item>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-virtual-scroll [items]="gnomesInformation$ | async" class="inhabitants-list">
     <ion-item *virtualItem="let gnome" (click)="goToGnomeDetail(gnome)">
-      <ion-avatar slot="start"> <img [src]="gnome.thumbnail" /> </ion-avatar>
+      <ion-avatar slot="start" class="avatar"> <img [src]="gnome.thumbnail" /> </ion-avatar>
       <ion-label>
         <h2>{{ gnome.name }}</h2>
         <p>{{ gnome.professions.toString() }}</p>

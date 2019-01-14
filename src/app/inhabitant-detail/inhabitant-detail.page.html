@@ -1,12 +1,12 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="dark">
     <ion-icon
       name="arrow-round-back"
       slot="start"
       [routerLink]="['/tabs/inhabitants-list']"
       class="back-arrow"
     ></ion-icon>
-    <ion-title>inhabitant-detail</ion-title>
+    <ion-title>Inhabitant Detail</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -28,7 +28,7 @@
       <ion-label class="label" slot="start"> Height </ion-label>
       <ion-note class="value" slot="end" id="gnome-height">{{ gnome.height }}</ion-note>
     </ion-item>
-    <ion-item>
+    <ion-item lines="none">
       <ion-label class="label" slot="start">Hair color</ion-label>
       <div
         id="gnome-hair-color"
