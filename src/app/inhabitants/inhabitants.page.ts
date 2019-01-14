@@ -5,6 +5,8 @@ import { Observable, noop } from 'rxjs';
 
 import { Gnome } from '../shared/models/gnome';
 import { PopulationService } from '../core/services/population.service';
+import { ModalController } from '@ionic/angular';
+import { InhabitantsFilterModalComponent } from './components/inhabitants-filter-modal/inhabitants-filter-modal.component';
 
 @Component({
   selector: 'app-inhabitants',
@@ -13,7 +15,11 @@ import { PopulationService } from '../core/services/population.service';
 })
 export class InhabitantsPage implements OnInit {
   gnomesInformation$: Observable<Gnome[]>;
-  constructor(private populationService: PopulationService, private router: Router) {
+  constructor(
+    private populationService: PopulationService,
+    private router: Router,
+    private modalController: ModalController
+  ) {
     this.gnomesInformation$ = this.populationService.gnomesInformation$;
   }
 
@@ -24,5 +30,11 @@ export class InhabitantsPage implements OnInit {
     this.populationService.setGnomeSelected(gnome);
 
     this.router.navigate(['/inhabitant-detail', gnome.id]);
+  }
+  async openFilterModal() {
+    const modal = await this.modalController.create({
+      component: InhabitantsFilterModalComponent
+    });
+    return await modal.present();
   }
 }

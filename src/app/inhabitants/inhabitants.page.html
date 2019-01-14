@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar color="dark"> <ion-title> Inhabitants List </ion-title> </ion-toolbar>
   <ion-toolbar class="filter-item">
-    <ion-item lines="none"> <ion-icon name="options" slot="end"></ion-icon> </ion-item>
+    <ion-item lines="none">
+      <ion-icon name="options" slot="end" (click)="openFilterModal()"></ion-icon>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 

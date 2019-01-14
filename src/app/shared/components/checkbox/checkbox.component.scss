@@ -1,0 +1,18 @@
+.checkbox {
+  box-sizing: border-box;
+  width: 44vw;
+  margin: 2vh 1vw;
+  font-size: .9rem;
+  padding: 3.5vh 2vw;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  &:not(.active) {
+    border: 1px solid white;
+  }
+  &.active {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+  }
+}
