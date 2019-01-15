@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../shared/models/user';
+import { User } from '../core/models/user';
 
 @Component({
   selector: 'app-my-character',

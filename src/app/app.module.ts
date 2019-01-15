@@ -11,6 +11,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_CONFIG, APP_CONSTANTS } from './app.config';
+import { INHABITANTS_CONFIG, INHABITANTS_CONSTANTS } from './inhabitants/inhabitants.config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +27,8 @@ import { APP_CONFIG, APP_CONSTANTS } from './app.config';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: APP_CONFIG, useValue: APP_CONSTANTS }
+    { provide: APP_CONFIG, useValue: APP_CONSTANTS },
+    { provide: INHABITANTS_CONFIG, useValue: INHABITANTS_CONSTANTS }
   ],
   bootstrap: [AppComponent]
 })

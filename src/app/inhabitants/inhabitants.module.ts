@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { InhabitantsPage } from './inhabitants.page';
 import { InhabitantsFilterModalComponent } from './components/inhabitants-filter-modal/inhabitants-filter-modal.component';
 import { SharedModule } from '../shared/shared.module';
-import { INHABITANTS_CONFIG, INHABITANTS_CONSTANTS } from './inhabitants.config';
 
 @NgModule({
   imports: [
@@ -18,7 +17,6 @@ import { INHABITANTS_CONFIG, INHABITANTS_CONSTANTS } from './inhabitants.config'
     SharedModule
   ],
   declarations: [InhabitantsPage, InhabitantsFilterModalComponent],
-  entryComponents: [InhabitantsFilterModalComponent],
-  providers: [{ provide: INHABITANTS_CONFIG, useValue: INHABITANTS_CONSTANTS }]
+  entryComponents: [InhabitantsFilterModalComponent]
 })
 export class InhabitantsPageModule {}

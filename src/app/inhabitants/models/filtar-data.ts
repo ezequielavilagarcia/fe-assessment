@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Gnome } from 'src/app/shared/models/gnome';
+import { INHABITANTS_CONFIG, InhabitantsConfig } from '../inhabitants.config';
 
 interface RangeValue {
   lower: number;
@@ -17,21 +18,23 @@ export class FilterData {
   heightRange: RangeValue;
   hairColors: string[];
   professions: string[];
+  inhabitantsConfig: InhabitantsConfig;
 
-  constructor() {
+  constructor(@Inject(INHABITANTS_CONFIG) inhabitantsConfig: InhabitantsConfig) {
+    this.inhabitantsConfig = inhabitantsConfig;
     this.name = '';
     this.sorting = { asc: false, desc: false };
     this.ageRange = {
-      lower: 0,
-      upper: 500
+      lower: this.inhabitantsConfig.minAgeRange,
+      upper: this.inhabitantsConfig.maxAgeRange
     };
     this.weightRange = {
-      lower: 20,
-      upper: 60
+      lower: this.inhabitantsConfig.minWeightRange,
+      upper: this.inhabitantsConfig.maxWeightRange
     };
     this.heightRange = {
-      lower: 0,
-      upper: 300
+      lower: this.inhabitantsConfig.minHeightRange,
+      upper: this.inhabitantsConfig.maxHeightRange
     };
     this.hairColors = [];
     this.professions = [];
@@ -82,7 +85,7 @@ export class FilterData {
   nameStrategy(dataset: Gnome[]) {
     let filteredDataset = dataset;
     if (this.name !== '') {
-      this.filtersApplied.push('Name');
+      this.filtersApplied.push(this.inhabitantsConfig.nameFilterName);
 
       filteredDataset = dataset.filter(gnome => {
         const gnomeName = gnome.name.toLowerCase();
@@ -103,7 +106,7 @@ export class FilterData {
   sortingStrategy(dataset: Gnome[]) {
     let sortedDataset = dataset;
     if (this.sorting.asc) {
-      this.filtersApplied.push('Name asc');
+      this.filtersApplied.push(this.inhabitantsConfig.sortingFilterAscName);
 
       sortedDataset = sortedDataset.sort((gnomeA: Gnome, gnomeB: Gnome) => {
         const gnomeAName = gnomeA.name.toLowerCase().trim();
@@ -119,7 +122,7 @@ export class FilterData {
       });
     }
     if (this.sorting.desc) {
-      this.filtersApplied.push('Name desc');
+      this.filtersApplied.push(this.inhabitantsConfig.sortingFilterDescName);
 
       sortedDataset = sortedDataset.sort((gnomeA: Gnome, gnomeB: Gnome) => {
         const gnomeAName = gnomeA.name.toLowerCase().trim();
@@ -146,7 +149,7 @@ export class FilterData {
    */
   ageRangeStrategy(dataset: Gnome[]) {
     if (this.ageRange.lower !== 0 || this.ageRange.upper !== 500) {
-      this.filtersApplied.push('Age');
+      this.filtersApplied.push(this.inhabitantsConfig.ageFilterName);
     }
     return dataset.filter(gnome => {
       return gnome.age <= this.ageRange.upper && gnome.age >= this.ageRange.lower;
@@ -162,7 +165,7 @@ export class FilterData {
    */
   weightRangeStrategy(dataset: Gnome[]) {
     if (this.weightRange.lower !== 20 || this.weightRange.upper !== 60) {
-      this.filtersApplied.push('Weight');
+      this.filtersApplied.push(this.inhabitantsConfig.weightFilterName);
     }
     return dataset.filter(gnome => {
       return gnome.weight <= this.weightRange.upper && gnome.weight >= this.weightRange.lower;
@@ -179,7 +182,7 @@ export class FilterData {
    */
   heightRangeStrategy(dataset: Gnome[]) {
     if (this.heightRange.lower !== 0 || this.heightRange.upper !== 300) {
-      this.filtersApplied.push('Height');
+      this.filtersApplied.push(this.inhabitantsConfig.heightFilterName);
     }
     return dataset.filter(gnome => {
       return gnome.height <= this.heightRange.upper && gnome.height >= this.heightRange.lower;
@@ -197,7 +200,7 @@ export class FilterData {
   hairColorsStrategy(dataset: Gnome[]) {
     let filteredDataset = dataset;
     if (this.hairColors.length !== 0) {
-      this.filtersApplied.push('Hair');
+      this.filtersApplied.push(this.inhabitantsConfig.hairColorFilterName);
 
       filteredDataset = dataset.filter(gnome => {
         return this.hairColors.includes(gnome.hair_color.trim());
@@ -218,7 +221,7 @@ export class FilterData {
   professionsStrategy(dataset: Gnome[]) {
     let filteredDataset = dataset;
     if (this.professions.length !== 0) {
-      this.filtersApplied.push('Professions');
+      this.filtersApplied.push(this.inhabitantsConfig.professionFilterName);
 
       filteredDataset = dataset.filter(gnome => {
         for (const profession of gnome.professions) {

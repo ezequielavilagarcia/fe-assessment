@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 
 import { Storage } from '@ionic/storage';
 
-import { User } from 'src/app/shared/models/user';
+import { User } from 'src/app/core/models/user';
 import { APP_CONFIG, AppConfig } from 'src/app/app.config';
 import { of, Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
   isLoggedIn = false;
+  // store the URL so we can redirect after logging in
   redirectUrl = '/';
   private userDBKey: string;
   constructor(
@@ -21,7 +22,6 @@ export class AuthService {
   ) {
     this.userDBKey = constants.userDBKey;
   }
-  // store the URL so we can redirect after logging in
 
   login(user: User): void {
     this.user.copy(user);

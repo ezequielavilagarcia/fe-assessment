@@ -1,11 +1,32 @@
 import { FilterData } from './filtar-data';
 import { Gnome } from 'src/app/shared/models/gnome';
+import { InhabitantsConfig } from '../inhabitants.config';
 
 let inhabitantsList: Gnome[];
 let filterData: FilterData;
+let inhabitantsConfig: InhabitantsConfig;
 describe('FilterData', () => {
   beforeEach(() => {
-    filterData = new FilterData();
+    inhabitantsConfig = {
+      minAgeRange: 0,
+      maxAgeRange: 500,
+      ageStep: 10,
+      minWeightRange: 20,
+      maxWeightRange: 60,
+      weightStep: 1,
+      minHeightRange: 0,
+      maxHeightRange: 300,
+      heightStep: 10,
+      nameFilterName: 'Name',
+      sortingFilterAscName: 'Name asc',
+      sortingFilterDescName: 'Name desc',
+      ageFilterName: 'Age',
+      weightFilterName: 'Weight',
+      heightFilterName: 'Height',
+      hairColorFilterName: 'Hair',
+      professionFilterName: 'Professions'
+    };
+    filterData = new FilterData(inhabitantsConfig);
 
     inhabitantsList = [
       {
@@ -62,6 +83,7 @@ describe('FilterData', () => {
       expect(heightRangeStrategySyp).toHaveBeenCalled();
       expect(hairColorsStrategySyp).toHaveBeenCalled();
       expect(professionsStrategySyp).toHaveBeenCalled();
+      expect(filterData.filtersApplied.length).toBe(0);
     });
 
     it('Should work with inmutable data', () => {
@@ -77,6 +99,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(1);
       expect(filteredInhabitantsList[0].id).toBe(1);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.nameFilterName);
     });
 
     it('Should filter with case insensitive', () => {
@@ -85,6 +109,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(1);
       expect(filteredInhabitantsList[0].id).toBe(1);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.nameFilterName);
     });
 
     it('Should return all records when name is empty', () => {
@@ -93,6 +119,7 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(3);
       expect(filteredInhabitantsList).toBe(inhabitantsList);
+      expect(filterData.filtersApplied.length).toBe(0);
     });
   });
 
@@ -105,6 +132,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(3);
       expect(filteredInhabitantsList[1].name).toBe(inhabitantsList[2].name);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.sortingFilterAscName);
     });
     it('Should sort desc', () => {
       filterData.sorting.desc = true;
@@ -114,6 +143,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(3);
       expect(filteredInhabitantsList[0].name).toBe(inhabitantsList[1].name);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.sortingFilterDescName);
     });
   });
   describe('#ageRangeStrategy', () => {
@@ -124,6 +155,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(1);
       expect(filteredInhabitantsList[0].age).toBe(10);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.ageFilterName);
     });
     it('Should filter by age range including lower and upper limits', () => {
       filterData.ageRange.lower = 10;
@@ -133,6 +166,8 @@ describe('FilterData', () => {
       expect(filteredInhabitantsList.length).toBe(2);
       expect(filteredInhabitantsList[0].age).toBe(20);
       expect(filteredInhabitantsList[1].age).toBe(10);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.ageFilterName);
     });
 
     it('Should return a new instance of data', () => {
@@ -142,6 +177,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(3);
       expect(filteredInhabitantsList).not.toBe(inhabitantsList);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.ageFilterName);
     });
   });
 
@@ -153,6 +190,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(1);
       expect(filteredInhabitantsList[0].weight).toBe(20);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.weightFilterName);
     });
     it('Should filter by weight range including lower and upper limits', () => {
       filterData.weightRange.lower = 20;
@@ -182,6 +221,8 @@ describe('FilterData', () => {
 
       expect(filteredInhabitantsList.length).toBe(1);
       expect(filteredInhabitantsList[0].height).toBe(0);
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.heightFilterName);
     });
     it('Should filter by height range including lower and upper limits', () => {
       filterData.heightRange.lower = 0;
@@ -210,6 +251,8 @@ describe('FilterData', () => {
       expect(filteredInhabitantsList.length).toBe(2);
       expect(filteredInhabitantsList[0].hair_color).toBe('blue');
       expect(filteredInhabitantsList[1].hair_color).toBe('pink');
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.hairColorFilterName);
     });
 
     it('Should return new instance of data when filter something', () => {
@@ -236,6 +279,8 @@ describe('FilterData', () => {
       expect(filteredInhabitantsList.length).toBe(2);
       expect(filteredInhabitantsList[0].professions).toContain('prof1');
       expect(filteredInhabitantsList[1].professions).toContain('prof1');
+      expect(filterData.filtersApplied.length).toBe(1);
+      expect(filterData.filtersApplied[0]).toBe(inhabitantsConfig.professionFilterName);
     });
 
     it('Should filter by professions with trim', () => {

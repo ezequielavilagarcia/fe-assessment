@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyCharacterPage } from './my-character.page';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../shared/models/user';
+import { User } from '../core/models/user';
 
 describe('MyCharacterPage', () => {
   let component: MyCharacterPage;

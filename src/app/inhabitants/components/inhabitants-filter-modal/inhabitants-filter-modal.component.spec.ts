@@ -18,12 +18,7 @@ describe('InhabitantsFilterModalComponent', () => {
     class ModalControllerStub {
       dismiss() {}
     }
-    class PopulationServiceStub {
-      hairColors$ = of(['color1', 'color2']);
-      professions$ = of(['profession1', 'profession2']);
-      filter: FilterData = new FilterData();
-      filterDataset(filter) {}
-    }
+
     const inhabitantsConfigStub: InhabitantsConfig = {
       minAgeRange: 0,
       maxAgeRange: 500,
@@ -33,8 +28,24 @@ describe('InhabitantsFilterModalComponent', () => {
       weightStep: 1,
       minHeightRange: 0,
       maxHeightRange: 300,
-      heightStep: 10
+      heightStep: 10,
+      nameFilterName: 'Name',
+      sortingFilterAscName: 'Name asc',
+      sortingFilterDescName: 'Name desc',
+      ageFilterName: 'Age',
+      weightFilterName: 'Weight',
+      heightFilterName: 'Height',
+      hairColorFilterName: 'Hair',
+      professionFilterName: 'Professions'
     };
+
+    class PopulationServiceStub {
+      hairColors$ = of(['color1', 'color2']);
+      professions$ = of(['profession1', 'profession2']);
+      filter: FilterData = new FilterData(inhabitantsConfigStub);
+      filterDataset(filter) {}
+    }
+
     TestBed.configureTestingModule({
       declarations: [InhabitantsFilterModalComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

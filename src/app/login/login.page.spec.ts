@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginPage } from './login.page';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '../shared/models/user';
+import { User } from '../core/models/user';
 import { FormsModule } from '@angular/forms';
 
 describe('LoginPage', () => {
