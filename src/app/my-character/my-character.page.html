@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="dark"> <ion-title> My Character </ion-title> </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-img [src]="userImgPath" class="img"></ion-img>
+    <ion-card-header>
+      <ion-card-title color="light" class="card-header">{{ user.username }}</ion-card-title>
+    </ion-card-header>
+    <ion-item>
+      <ion-label class="label" slot="start"> Date of birth </ion-label>
+      <ion-note class="value" slot="end">{{ user.dateOfBirth | date }}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="label" slot="start"> Gender </ion-label>
+      <ion-note class="value" slot="end">{{ user.gender }}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="label" slot="start"> Race </ion-label>
+      <ion-note class="value" slot="end">{{ user.race }}</ion-note>
+    </ion-item>
+  </ion-card>
+  <ion-button (click)="logout()" expand="block">Logout</ion-button>
+</ion-content>

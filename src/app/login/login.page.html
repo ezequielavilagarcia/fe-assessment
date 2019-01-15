@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="dark"> <ion-title>Login</ion-title> </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form #f="ngForm">
+    <ion-item>
+      <ion-label slot="start">Username <span class="required-symbol">*</span></ion-label>
+
+      <ion-input
+        type="text"
+        placeholder="??????"
+        name="username"
+        [(ngModel)]="user.username"
+        required
+        slot="end"
+        maxlength = "8"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Date of birth <span class="required-symbol">*</span></ion-label>
+      <ion-datetime
+        display-format="MM/DD/YYYY"
+        placeholder="Select"
+        name="dateOfBirth"
+        [(ngModel)]="user.dateOfBirth"
+        required
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Gender <span class="required-symbol">*</span></ion-label>
+      <ion-select
+        ok-text="Okay"
+        cancel-text="Dismiss"
+        placeholder="Select"
+        name="gender"
+        [(ngModel)]="user.gender"
+        required
+      >
+        <ion-select-option value="male">Male</ion-select-option>
+        <ion-select-option value="female">Female</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Race <span class="required-symbol">*</span></ion-label>
+      <ion-select
+        ok-text="Okay"
+        cancel-text="Dismiss"
+        placeholder="Select"
+        name="race"
+        [(ngModel)]="user.race"
+        required
+      >
+        <ion-select-option value="human">Human</ion-select-option>
+        <ion-select-option value="orc">Orc</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Remember me</ion-label>
+      <ion-checkbox slot="end" color="primary" [(ngModel)]="rememberMe" name="checkbox"></ion-checkbox>
+    </ion-item>
+    <ion-button (click)="login()" expand="block" [disabled]="!f.valid">Login</ion-button>
+  </form>
+</ion-content>
