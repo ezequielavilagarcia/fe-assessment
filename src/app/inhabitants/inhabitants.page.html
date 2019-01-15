@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar color="dark"> <ion-title> Inhabitants List </ion-title> </ion-toolbar>
-  <ion-toolbar class="filter-item">
+  <ion-toolbar class="filter-item" *ngIf="(gnomesInformation$ | async).length !== 0">
     <ion-item lines="none">
       <ion-searchbar debounce="250" (ionChange)="searchByName($event)"></ion-searchbar>
-      <ion-icon name="options" slot="end" (click)="openFilterModal()"></ion-icon>
+      <ion-icon
+        name="options"
+        slot="end"
+        (click)="openFilterModal()"
+        [color]="(filterStatus$ | async) ? 'primary' : 'secondary'"
+        class="filter-icon"
+      ></ion-icon>
     </ion-item>
   </ion-toolbar>
 </ion-header>
@@ -18,4 +24,13 @@
       </ion-label>
     </ion-item>
   </ion-virtual-scroll>
+  <ng-container *ngIf="(gnomesInformation$ | async).length === 0">
+    <ion-card>
+      <ion-img src="/assets/desert-town.jpg"></ion-img>
+
+      <ion-card-header class="card-header card-margin-top">
+        <ion-card-title>The town is empty, please come back later...</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-container>
 </ion-content>

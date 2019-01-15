@@ -54,11 +54,19 @@ describe('InhabitantsPage', () => {
     class PopulationServiceStub {
       private gnomesInformationSubject = new BehaviorSubject([]);
       public gnomesInformation$ = this.gnomesInformationSubject.asObservable();
+
       loadData() {
         this.gnomesInformationSubject.next(inhabitantsList);
         return of(null);
       }
+
       setGnomeSelected() {}
+
+      filterDataset(dataset) {}
+
+      get filter() {
+        return { name: '' };
+      }
     }
 
     class RouterStub {
@@ -122,5 +130,17 @@ describe('InhabitantsPage', () => {
     const spyRouter = spyOn(router, 'navigate').and.callThrough();
     component.goToGnomeDetail(gnome);
     expect(spyRouter).toHaveBeenCalledWith(['/inhabitant-detail', gnome.id]);
+  });
+
+  it('should call filterDataset from populationService with correct filter name value', () => {
+    const $event = {
+      target: { value: 'fake-text' }
+    };
+    const populationService = TestBed.get(PopulationService);
+    const filterDatasetSpy = spyOn(populationService, 'filterDataset');
+
+    component.searchByName($event);
+
+    expect(filterDatasetSpy).toHaveBeenCalledWith({ name: 'fake-text' });
   });
 });

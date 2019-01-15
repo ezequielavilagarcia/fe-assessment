@@ -18,11 +18,13 @@ export class PopulationService {
   private gnomeSelectedSubject: BehaviorSubject<Gnome>;
   private professionsSubject: BehaviorSubject<string[]>;
   private hairColorsSubject: BehaviorSubject<string[]>;
+  private filterStatusSubject: BehaviorSubject<boolean>;
 
   public gnomesInformation$: Observable<Gnome[]>;
   public gnomeSelected$: Observable<Gnome>;
   public professions$: Observable<string[]>;
   public hairColors$: Observable<string[]>;
+  public filterStatus$: Observable<boolean>;
 
   constructor(
     @Inject(APP_CONFIG) constants: AppConfig,
@@ -42,6 +44,9 @@ export class PopulationService {
 
     this.professionsSubject = new BehaviorSubject([]);
     this.professions$ = this.professionsSubject.asObservable();
+
+    this.filterStatusSubject = new BehaviorSubject(this.filterData.isActive);
+    this.filterStatus$ = this.filterStatusSubject.asObservable();
   }
 
   /**
@@ -53,6 +58,9 @@ export class PopulationService {
   loadData() {
     if (this.populationDetail == null) {
       return this.http.get(this.apiEndpoint).pipe(
+        catchError(err => {
+          return of({ Brastlewark: [] });
+        }),
         map((response: { Brastlewark: Gnome[] }) => {
           this.populationDetail = response.Brastlewark;
           const professions = new Set();
@@ -99,5 +107,6 @@ export class PopulationService {
     const futureDataset = this.filterData.executeAllStrategies(this.populationDetail);
 
     this.gnomesInformationSubject.next(futureDataset);
+    this.filterStatusSubject.next(this.filterData.isActive);
   }
 }
