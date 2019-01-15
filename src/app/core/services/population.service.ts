@@ -2,9 +2,10 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { APP_CONFIG, AppConfig } from 'src/app/app.config';
-import { tap, map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Gnome } from 'src/app/shared/models/gnome';
 import { Observable, of, BehaviorSubject } from 'rxjs';
+import { FilterData } from 'src/app/inhabitants/models/filtar-data';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +14,42 @@ export class PopulationService {
   private populationDetail: Gnome[];
   private apiEndpoint: string;
 
-  private gnomesInformationSubject = new BehaviorSubject([]);
-  private gnomeSelectedSubject = new BehaviorSubject(null);
-  private professionsSubject = new BehaviorSubject([]);
-  private hairColorsSubject = new BehaviorSubject([]);
+  private gnomesInformationSubject: BehaviorSubject<Gnome[]>;
+  private gnomeSelectedSubject: BehaviorSubject<Gnome>;
+  private professionsSubject: BehaviorSubject<string[]>;
+  private hairColorsSubject: BehaviorSubject<string[]>;
 
-  public gnomesInformation$: Observable<Gnome[]> = this.gnomesInformationSubject.asObservable();
-  public gnomeSelected$: Observable<Gnome> = this.gnomeSelectedSubject.asObservable();
-  public professions$: Observable<string[]> = this.professionsSubject.asObservable();
-  public hairColors$: Observable<string[]> = this.hairColorsSubject.asObservable();
+  public gnomesInformation$: Observable<Gnome[]>;
+  public gnomeSelected$: Observable<Gnome>;
+  public professions$: Observable<string[]>;
+  public hairColors$: Observable<string[]>;
 
-  constructor(@Inject(APP_CONFIG) constants: AppConfig, private http: HttpClient) {
+  constructor(
+    @Inject(APP_CONFIG) constants: AppConfig,
+    private http: HttpClient,
+    private filterData: FilterData
+  ) {
     this.apiEndpoint = constants.apiEndpoint;
+
+    this.gnomesInformationSubject = new BehaviorSubject([]);
+    this.gnomesInformation$ = this.gnomesInformationSubject.asObservable();
+
+    this.gnomeSelectedSubject = new BehaviorSubject(null);
+    this.gnomeSelected$ = this.gnomeSelectedSubject.asObservable();
+
+    this.hairColorsSubject = new BehaviorSubject([]);
+    this.hairColors$ = this.hairColorsSubject.asObservable();
+
+    this.professionsSubject = new BehaviorSubject([]);
+    this.professions$ = this.professionsSubject.asObservable();
   }
 
+  /**
+   * Load inhabitants data and also prepare professions and hair colors to be used in filters.
+   * It sort and trim all the professions and hair colors
+   * @returns
+   * @memberof PopulationService
+   */
   loadData() {
     if (this.populationDetail == null) {
       return this.http.get(this.apiEndpoint).pipe(
@@ -36,13 +59,17 @@ export class PopulationService {
           const hairColors = new Set();
 
           for (const gnome of this.populationDetail) {
-            professions.add(gnome.professions);
-            hairColors.add(gnome.hair_color);
+            for (const profession of gnome.professions) {
+              professions.add(profession.trim());
+            }
+            hairColors.add(gnome.hair_color.trim());
           }
+          const sortedProfessions = Array.from(professions).sort();
+          const sortedHairColors = Array.from(hairColors).sort();
 
           this.gnomesInformationSubject.next(this.populationDetail);
-          this.professionsSubject.next(Array.from(professions));
-          this.hairColorsSubject.next(Array.from(hairColors));
+          this.professionsSubject.next(sortedProfessions);
+          this.hairColorsSubject.next(sortedHairColors);
 
           return null;
         })
@@ -61,5 +88,16 @@ export class PopulationService {
    */
   setGnomeSelected(gnome: Gnome) {
     this.gnomeSelectedSubject.next(gnome);
+  }
+
+  get filter(): FilterData {
+    return JSON.parse(JSON.stringify(this.filterData));
+  }
+
+  filterDataset(filter: FilterData) {
+    this.filterData.copyFilters(filter);
+    const futureDataset = this.filterData.executeAllStrategies(this.populationDetail);
+
+    this.gnomesInformationSubject.next(futureDataset);
   }
 }

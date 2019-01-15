@@ -26,15 +26,24 @@ export class InhabitantsPage implements OnInit {
   ngOnInit() {
     this.populationService.loadData().subscribe(noop);
   }
+
   goToGnomeDetail(gnome: Gnome) {
     this.populationService.setGnomeSelected(gnome);
 
     this.router.navigate(['/inhabitant-detail', gnome.id]);
   }
+
   async openFilterModal() {
     const modal = await this.modalController.create({
       component: InhabitantsFilterModalComponent
     });
     return await modal.present();
+  }
+
+  searchByName($event) {
+    const value: string = $event.target.value;
+    const filter = this.populationService.filter;
+    filter.name = value;
+    this.populationService.filterDataset(filter);
   }
 }

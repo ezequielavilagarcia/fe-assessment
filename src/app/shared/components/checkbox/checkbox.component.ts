@@ -15,5 +15,6 @@ export class CheckboxComponent implements OnInit {
 
   change() {
     this.active = !this.active;
+    this.activeChange.emit(this.active);
   }
 }

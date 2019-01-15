@@ -2,6 +2,7 @@
   <ion-toolbar color="dark"> <ion-title> Inhabitants List </ion-title> </ion-toolbar>
   <ion-toolbar class="filter-item">
     <ion-item lines="none">
+      <ion-searchbar debounce="250" (ionChange)="searchByName($event)"></ion-searchbar>
       <ion-icon name="options" slot="end" (click)="openFilterModal()"></ion-icon>
     </ion-item>
   </ion-toolbar>

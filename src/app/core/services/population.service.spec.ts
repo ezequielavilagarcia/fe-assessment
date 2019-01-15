@@ -6,6 +6,7 @@ import { of, noop } from 'rxjs';
 import { PopulationService } from './population.service';
 import { APP_CONFIG, AppConfig } from 'src/app/app.config';
 import { Gnome } from 'src/app/shared/models/gnome';
+import { FilterData } from 'src/app/inhabitants/models/filtar-data';
 
 describe('PopulationService', () => {
   const inhabitantsList: Gnome[] = [
@@ -53,11 +54,17 @@ describe('PopulationService', () => {
         return of({ Brastlewark: inhabitantsList });
       }
     }
-
+    class FilterDataStub {
+      copyFilters(filters) {}
+      executeAllStrategies() {
+        return inhabitantsList;
+      }
+    }
     TestBed.configureTestingModule({
       providers: [
         { provide: APP_CONFIG, useValue: APP_CONFIGStub },
-        { provide: HttpClient, useClass: HttpClientStub }
+        { provide: HttpClient, useClass: HttpClientStub },
+        { provide: FilterData, useClass: FilterDataStub }
       ]
     });
   });
@@ -93,10 +100,8 @@ describe('PopulationService', () => {
     });
 
     it('should send the inhabitants list to gnomesInformation$ observable', () => {
-      const fakeResponse: Partial<Gnome>[] = [{ id: 123 }];
+      const fakeResponse: Gnome[] = inhabitantsList;
       const service: PopulationService = TestBed.get(PopulationService);
-      const http: Partial<HttpClient> = TestBed.get(HttpClient);
-      spyOn(http, 'get').and.callFake(() => of({ Brastlewark: fakeResponse }));
 
       service.loadData().subscribe(noop);
 

@@ -1,14 +1,27 @@
 .border-bottom {
   border-bottom: 1px solid rgba(191, 191, 191, 0.6);
+  margin-bottom: 2vh;
 }
 
 .apply-label {
   text-align: right;
+  margin: 0;
+  padding: 10px;
 }
 
 .item-title {
   display: block;
-  font-size: .7rem;
+  font-size: .8rem;
   text-align: center;
   width: 100%;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.range {
+  padding-top: 1vh;
+}
+
+.sorting-options-container{
+  display: flex;
 }

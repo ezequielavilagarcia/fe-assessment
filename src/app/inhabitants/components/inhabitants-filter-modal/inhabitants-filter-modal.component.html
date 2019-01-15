@@ -2,7 +2,14 @@
   <ion-toolbar color="dark">
     <ion-item color="dark" lines="none" class="border-bottom">
       <ion-icon name="close" (click)="close()" slot="start" color="light"></ion-icon>
-      <ion-label slot="end" color="light" class="apply-label">Apply</ion-label>
+      <ion-label
+        slot="end"
+        color="light"
+        class="apply-label"
+        id="apply-label"
+        (click)="applyFilter()"
+        >Apply</ion-label
+      >
     </ion-item>
   </ion-toolbar>
 </ion-header>
@@ -10,21 +17,106 @@
   <section>
     <h1 class="item-title">Sorting</h1>
     <ion-item color="dark" lines="none" class="border-bottom">
-      <app-checkbox text="Name ascending"></app-checkbox>
-      <app-checkbox text="Name descending"></app-checkbox>
+      <div class="sorting-options-container">
+        <app-checkbox
+          [active]="filter.sorting.asc"
+          (activeChange)="changeSortingAsc($event)"
+          text="Name ascending"
+        ></app-checkbox>
+        <app-checkbox
+          [active]="filter.sorting.desc"
+          (activeChange)="changeSortingDesc($event)"
+          text="Name descending"
+        ></app-checkbox>
+      </div>
     </ion-item>
   </section>
   <section>
     <h1 class="item-title">Age</h1>
-    <ion-item color="dark" lines="none" class="border-bottom">
+    <ion-item color="dark" lines="none">
+      <span>{{ filter.ageRange.lower }}</span>
       <ion-range
-        min="0"
-        max="1000"
-        step="10"
+        [min]="inhabitantsConstants.minAgeRange"
+        [max]="inhabitantsConstants.maxAgeRange"
+        [step]="inhabitantsConstants.ageStep"
         dual-knobs="true"
         color="light"
-        pin="true"
+        name="age"
+        [(ngModel)]="filter.ageRange"
+        class="range"
+        id="age-range-value"
       ></ion-range>
+      <span>{{ filter.ageRange.upper }}</span>
     </ion-item>
   </section>
+  <section>
+    <h1 class="item-title">Weight</h1>
+    <ion-item color="dark" lines="none">
+      <span>{{ filter.weightRange.lower }}</span>
+      <ion-range
+        [min]="inhabitantsConstants.minWeightRange"
+        [max]="inhabitantsConstants.maxWeightRange"
+        [step]="inhabitantsConstants.weightStep"
+        dual-knobs="true"
+        color="light"
+        name="weight"
+        [(ngModel)]="filter.weightRange"
+        class="range"
+        id="weight-range-value"
+      ></ion-range>
+      <span>{{ filter.weightRange.upper }}</span>
+    </ion-item>
+  </section>
+  <section>
+    <h1 class="item-title">Height</h1>
+    <ion-item color="dark" lines="none" class="border-bottom">
+      <span>{{ filter.heightRange.lower }}</span>
+      <ion-range
+        [min]="inhabitantsConstants.minHeightRange"
+        [max]="inhabitantsConstants.maxHeightRange"
+        [step]="inhabitantsConstants.heightStep"
+        dual-knobs="true"
+        color="light"
+        name="height"
+        [(ngModel)]="filter.heightRange"
+        class="range"
+        id="height-range-value"
+      ></ion-range>
+      <span>{{ filter.heightRange.upper }}</span>
+    </ion-item>
+  </section>
+
+  <ion-item color="dark">
+    <ion-label>Hair Colors</ion-label>
+    <ion-select
+      multiple="true"
+      cancelText="Nah"
+      okText="Okay!"
+      color="dark"
+      name="hairColors"
+      placeholder="Select..."
+      [(ngModel)]="filter.hairColors"
+    >
+      <ion-select-option *ngFor="let hairColor of (hairColors$ | async)" [value]="hairColor">
+        {{ hairColor }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item color="dark">
+    <ion-label>Professions</ion-label>
+    <ion-select
+      multiple="true"
+      cancelText="Nah"
+      okText="Okay!"
+      color="dark"
+      name="professions"
+      placeholder="Select..."
+      [(ngModel)]="filter.professions"
+    >
+      <ion-select-option *ngFor="let profession of (professions$ | async)" [value]="profession">
+        {{ profession }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 </ion-content>
