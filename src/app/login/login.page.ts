@@ -18,6 +18,24 @@ export class LoginPage implements OnInit {
   login() {
     // Redirect the user
     this.authService.login(this.user);
+
+    if (this.rememberMe) {
+      this.authService.rememberUser();
+    } else {
+      this.authService.forgetUser();
+    }
+
     this.router.navigate([this.authService.redirectUrl]);
+
+    this.resetForm();
+  }
+
+  /**
+   * Reset form for future access
+   *
+   * @memberof LoginPage
+   */
+  resetForm() {
+    this.user.reset();
   }
 }

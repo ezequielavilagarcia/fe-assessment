@@ -7,7 +7,8 @@ import { AuthService } from '../core/services/auth.service';
   styleUrls: ['town.page.scss']
 })
 export class TownPage {
-  private username: string;
+  public username: string;
+
   constructor(private authService: AuthService) {
     this.username = this.authService.user.username;
   }

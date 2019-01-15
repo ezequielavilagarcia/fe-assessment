@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +17,13 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> | Promise<boolean> | boolean {
     const url: string = state.url;
 
-    return this.checkLogin(url);
-  }
-
-  checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) {
-      return true;
-    }
-
-    // Store the attempted URL for redirecting
-    this.authService.redirectUrl = url;
-
-    // Navigate to the login page
-    this.router.navigate(['/login']);
-    return false;
+    return this.authService.checkLogin().pipe(
+      tap(isLoggedIn => {
+        if (!isLoggedIn) {
+          // Navigate to the login page
+          this.router.navigate(['/login']);
+        }
+      })
+    );
   }
 }

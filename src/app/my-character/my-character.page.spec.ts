@@ -23,6 +23,8 @@ describe('MyCharacterPage', () => {
         this.race = null;
         this.gender = null;
       }
+      copy(user: User) {}
+      reset() {}
     }
     class AuthServiceStub {
       user: User = new UserStub();

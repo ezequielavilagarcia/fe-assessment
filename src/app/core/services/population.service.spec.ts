@@ -46,7 +46,8 @@ describe('PopulationService', () => {
   ];
   beforeEach(() => {
     const APP_CONFIGStub: AppConfig = {
-      apiEndpoint: 'fakeApiEndpoint'
+      apiEndpoint: 'fakeApiEndpoint',
+      userDBKey: 'user'
     };
 
     class HttpClientStub {
