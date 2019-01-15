@@ -10,10 +10,8 @@ import { User } from '../shared/models/user';
 })
 export class MyCharacterPage {
   user: User;
-  userImgPath: string;
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.user;
-    this.userImgPath = `/assets/${this.user.race}-${this.user.gender}.jpg`;
   }
   logout() {
     this.authService.logout('/tabs/my-character');

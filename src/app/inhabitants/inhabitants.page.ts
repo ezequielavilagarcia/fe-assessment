@@ -15,14 +15,14 @@ import { InhabitantsFilterModalComponent } from './components/inhabitants-filter
 })
 export class InhabitantsPage implements OnInit {
   gnomesInformation$: Observable<Gnome[]>;
-  filterStatus$: Observable<boolean>;
+  filtersApplied$: Observable<string[]>;
   constructor(
     private populationService: PopulationService,
     private router: Router,
     private modalController: ModalController
   ) {
     this.gnomesInformation$ = this.populationService.gnomesInformation$;
-    this.filterStatus$ = this.populationService.filterStatus$;
+    this.filtersApplied$ = this.populationService.filtersApplied$;
   }
 
   ngOnInit() {

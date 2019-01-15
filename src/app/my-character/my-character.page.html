@@ -4,7 +4,7 @@
 
 <ion-content>
   <ion-card>
-    <ion-img [src]="userImgPath" class="img"></ion-img>
+    <ion-img [src]="'/assets/' + user.race + '-' + user.gender + '.jpg'" class="img"></ion-img>
     <ion-card-header>
       <ion-card-title color="light" class="card-header">{{ user.username }}</ion-card-title>
     </ion-card-header>

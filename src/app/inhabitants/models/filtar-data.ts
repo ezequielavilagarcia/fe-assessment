@@ -9,7 +9,7 @@ interface RangeValue {
   providedIn: 'root'
 })
 export class FilterData {
-  isActive: boolean;
+  filtersApplied: string[];
   name: string;
   sorting: { asc: boolean; desc: boolean };
   ageRange: RangeValue;
@@ -19,7 +19,6 @@ export class FilterData {
   professions: string[];
 
   constructor() {
-    this.isActive = false;
     this.name = '';
     this.sorting = { asc: false, desc: false };
     this.ageRange = {
@@ -36,6 +35,7 @@ export class FilterData {
     };
     this.hairColors = [];
     this.professions = [];
+    this.filtersApplied = [];
   }
 
   copyFilters(filter: FilterData) {
@@ -59,7 +59,7 @@ export class FilterData {
   executeAllStrategies(dataset: Gnome[]) {
     let filterDataset = dataset;
 
-    this.isActive = false;
+    this.filtersApplied = [];
 
     filterDataset = this.nameStrategy(filterDataset);
     filterDataset = this.sortingStrategy(filterDataset);
@@ -82,7 +82,8 @@ export class FilterData {
   nameStrategy(dataset: Gnome[]) {
     let filteredDataset = dataset;
     if (this.name !== '') {
-      this.isActive = true;
+      this.filtersApplied.push('Name');
+
       filteredDataset = dataset.filter(gnome => {
         const gnomeName = gnome.name.toLowerCase();
         const nameToCompare = this.name.trim().toLowerCase();
@@ -102,7 +103,7 @@ export class FilterData {
   sortingStrategy(dataset: Gnome[]) {
     let sortedDataset = dataset;
     if (this.sorting.asc) {
-      this.isActive = true;
+      this.filtersApplied.push('Name asc');
 
       sortedDataset = sortedDataset.sort((gnomeA: Gnome, gnomeB: Gnome) => {
         const gnomeAName = gnomeA.name.toLowerCase().trim();
@@ -118,7 +119,7 @@ export class FilterData {
       });
     }
     if (this.sorting.desc) {
-      this.isActive = true;
+      this.filtersApplied.push('Name desc');
 
       sortedDataset = sortedDataset.sort((gnomeA: Gnome, gnomeB: Gnome) => {
         const gnomeAName = gnomeA.name.toLowerCase().trim();
@@ -145,7 +146,7 @@ export class FilterData {
    */
   ageRangeStrategy(dataset: Gnome[]) {
     if (this.ageRange.lower !== 0 || this.ageRange.upper !== 500) {
-      this.isActive = true;
+      this.filtersApplied.push('Age');
     }
     return dataset.filter(gnome => {
       return gnome.age <= this.ageRange.upper && gnome.age >= this.ageRange.lower;
@@ -161,7 +162,7 @@ export class FilterData {
    */
   weightRangeStrategy(dataset: Gnome[]) {
     if (this.weightRange.lower !== 20 || this.weightRange.upper !== 60) {
-      this.isActive = true;
+      this.filtersApplied.push('Weight');
     }
     return dataset.filter(gnome => {
       return gnome.weight <= this.weightRange.upper && gnome.weight >= this.weightRange.lower;
@@ -178,7 +179,7 @@ export class FilterData {
    */
   heightRangeStrategy(dataset: Gnome[]) {
     if (this.heightRange.lower !== 0 || this.heightRange.upper !== 300) {
-      this.isActive = true;
+      this.filtersApplied.push('Height');
     }
     return dataset.filter(gnome => {
       return gnome.height <= this.heightRange.upper && gnome.height >= this.heightRange.lower;
@@ -196,7 +197,7 @@ export class FilterData {
   hairColorsStrategy(dataset: Gnome[]) {
     let filteredDataset = dataset;
     if (this.hairColors.length !== 0) {
-      this.isActive = true;
+      this.filtersApplied.push('Hair');
 
       filteredDataset = dataset.filter(gnome => {
         return this.hairColors.includes(gnome.hair_color.trim());
@@ -217,7 +218,7 @@ export class FilterData {
   professionsStrategy(dataset: Gnome[]) {
     let filteredDataset = dataset;
     if (this.professions.length !== 0) {
-      this.isActive = true;
+      this.filtersApplied.push('Professions');
 
       filteredDataset = dataset.filter(gnome => {
         for (const profession of gnome.professions) {
