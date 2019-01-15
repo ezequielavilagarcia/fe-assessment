@@ -37,6 +37,8 @@
               },
               {
                 "input": "src/global.scss"
+              },{
+                "input": "src/fonts/brastlewark-font/style.scss"
               }
             ],
             "scripts": []

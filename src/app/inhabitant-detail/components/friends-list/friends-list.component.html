@@ -3,14 +3,14 @@
     <ion-card-title class="header">Friends</ion-card-title>
   </ion-card-header>
   <div *ngIf="gnome.friends.length !== 0; else noFriends" id="friends-list">
-    <ion-item *ngFor="let friend of gnome.friends" >
+    <ion-item *ngFor="let friend of gnome.friends">
       <ion-label class="value-alone" id="friend-value">{{ friend }}</ion-label>
     </ion-item>
   </div>
 
   <ng-template #noFriends>
     <ion-item>
-      <ion-label class="value-alone" id="no-friends-message">{{ gnome.name }} does not have any friend</ion-label>
+      <ion-label class="value-alone" id="no-friends-message">Does not have any friend</ion-label>
     </ion-item>
   </ng-template>
 </ion-card>
